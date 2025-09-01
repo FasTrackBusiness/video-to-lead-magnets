@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_OWNER: ${{ github.repository_owner }}
   IMAGE_PREFIX: video2lm
 
 jobs:
@@ -34,8 +33,8 @@ jobs:
           context: ./api
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-api:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-api:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-api:latest
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-api:${{ github.sha }}
 
       - name: Build & push Worker
         uses: docker/build-push-action@v6
@@ -43,8 +42,8 @@ jobs:
           context: ./worker
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-worker:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-worker:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-worker:latest
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-worker:${{ github.sha }}
 
       - name: Build & push Web
         uses: docker/build-push-action@v6
@@ -52,5 +51,6 @@ jobs:
           context: ./web
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-web:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_PREFIX }}-web:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-web:latest
+            ${{ env.REGISTRY }}/${{ github.repository_owner | toLower }}/${{ env.IMAGE_PREFIX }}-web:${{ github.sha }}
+
