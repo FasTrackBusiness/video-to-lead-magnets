@@ -1,0 +1,11 @@
+:root { --brand-primary:#0ea5e9; --brand-accent:#22c55e; }
+a { color: var(--brand-primary); }
+button { background: var(--brand-primary); color: white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+button:hover { filter: brightness(0.9); }
+h1,h2,h3 { color: var(--brand-primary); }
+section { border-color: var(--brand-accent) !important; }
+input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+
+body { background: #fafafa; }
+main { background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 24px; border-radius: 14px; }

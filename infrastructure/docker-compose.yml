@@ -1,0 +1,75 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  api:
+    build:
+      context: ../api
+    env_file:
+      - ../api/.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://app:app@db:5432/appdb
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_BUCKET: uploads
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin
+    depends_on:
+      - db
+      - minio
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: ../worker
+    env_file:
+      - ../worker/.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://app:app@db:5432/appdb
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_BUCKET: uploads
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin
+      API_URL: http://api:8000
+      WHISPER_MODEL: base
+    depends_on:
+      - db
+      - minio
+      - api
+
+  web:
+    build:
+      context: ../web
+    env_file:
+      - ../web/.env.example
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:
+  minio_data:

@@ -1,0 +1,22 @@
+{
+  "name": "vtlm-web",
+  "private": true,
+  "version": "0.1.1",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000"
+  },
+  "dependencies": {
+    "next": "14.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "axios": "1.7.2",
+    "react-quill": "2.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.3",
+    "autoprefixer": "10.4.19",
+    "postcss": "8.4.38"
+  }
+}
